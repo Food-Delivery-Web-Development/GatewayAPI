@@ -1,4 +1,4 @@
-@startuml
+@startuml Delivery App
 
 entity User {
     +Id: UUID [PK]
@@ -17,13 +17,28 @@ entity Address {
     Country: VARCHAR(255)
 }
 
+entity Restaurant {
+    + Id: UUID [PK]
+    --
+    Name: VARCHAR(255)
+    Branch: VARCHAR(255)
+    AddressId: UUID [FK]
+}
+
 entity Product {
     +Id: UUID [PK]
     --
-    Name: VARCHAR(100)
+    Name: VARCHAR(255)
     Description: TEXT
-    Price: DECIMAL(10,2)
-    Category: VARCHAR(100)
+    Price: DECIMAL
+    Category: VARCHAR(255)
+}
+
+entity Topic {
+    + Id: UUID [PK]
+    --
+    Name: VARCHAR(255)
+    Price: DECIMAL
 }
 
 entity Order {
@@ -45,8 +60,10 @@ entity OrderItem {
 }
 
 User ||--o Address : "has"
-User ||--o "Order" : "places"
+User --o Order : "has"
 Order ||--o OrderItem : "contains"
-Product ||--o OrderItem : "listed in"
+OrderItem ||--o Product : "has"
+Product ||--o Topic : "has"
+Restaurant ||--o Product : "has"
 
 @enduml
